@@ -36,6 +36,9 @@ DATABASES = {
     }
 }
 EOF
+elif  [ ! -d /data/spug/spug_web/build ]; then
+    tar xf web.tar.gz -C /data/spug/spug_web/
+    rm -f web.tar.gz
 fi
 
 # exec supervisord -c /etc/supervisord.conf
