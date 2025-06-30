@@ -38,4 +38,5 @@ DATABASES = {
 EOF
 fi
 
-exec supervisord -c /etc/supervisord.conf
+# exec supervisord -c /etc/supervisord.conf
+exec supervisord -c /etc/supervisord.d/spug.ini
