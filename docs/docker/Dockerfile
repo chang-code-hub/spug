@@ -57,7 +57,7 @@ RUN pip3 install --no-cache-dir -i https://mirrors.aliyun.com/pypi/simple/ \
     user_agents==2.2.0
 
 # 设置 bashrc
-RUN echo -e '\n# Source definitions\n. /etc/profile\n' >> /root/.bashrc
+RUN echo '\n# Source definitions\n. /etc/profile\n' >> /root/.bashrc
 
 RUN mkdir -p /data/repos
 COPY docs/docker/init_spug /usr/bin/
@@ -70,8 +70,7 @@ COPY docs/docker/entrypoint.sh /
 COPY spug_web/build /app/spug_web
 COPY spug_api /app/spug_api
 
-RUN mkdir -p /root/.bashrc.d && \
-    echo -e '\n# 自动加载 ~/.bashrc.d 目录中的脚本\nif [ -d "$HOME/.bashrc.d" ]; then\n  for f in "$HOME"/.bashrc.d/*.sh; do\n    [ -r "$f" ] && [ -f "$f" ] && . "$f"\n  done\nfi' >> /root/.bashrc
+RUN echo '[ -f /root/command.sh ] && . /root/command.sh' >> /root/.bashrc
 
 VOLUME /data
 EXPOSE 80
