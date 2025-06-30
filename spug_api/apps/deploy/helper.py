@@ -273,7 +273,7 @@ class Helper:
         if env:
             env = dict(env.items())
             env.update(os.environ)
-        task = subprocess.Popen(command, env=env, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        task = subprocess.Popen(command, env=env, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, executable='/bin/bash')
         message = b''
         while True:
             output = task.stdout.read(1)

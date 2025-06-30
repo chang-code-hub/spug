@@ -14,7 +14,7 @@ import json
 
 def local_executor(command):
     code, out, now = 1, None, time.time()
-    task = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    task = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, executable='/bin/bash')
     try:
         code = task.wait(3600)
         out = task.stdout.read() + task.stderr.read()
