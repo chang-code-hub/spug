@@ -12,6 +12,7 @@ from apps.deploy.helper import Helper
 import json
 import uuid
 import os
+import shutil
 
 REPOS_DIR = settings.REPOS_DIR
 BUILD_DIR = settings.BUILD_DIR
@@ -67,7 +68,9 @@ def _build(rep: Repository, helper, env):
     extend = rep.deploy.extend_obj
     extras = json.loads(rep.extra)
     git_dir = os.path.join(REPOS_DIR, str(rep.deploy_id))
+
     build_dir = os.path.join(REPOS_DIR, rep.spug_version)
+
     tar_file = os.path.join(BUILD_DIR, f'{rep.spug_version}.tar.gz')
     if extras[0] == 'branch':
         tree_ish = extras[2]
@@ -84,8 +87,24 @@ def _build(rep: Repository, helper, env):
         helper.local(f'cd {git_dir} && {extend.hook_pre_server}', env)
 
     helper.send_step('local', 2, f'{human_time()} 执行检出...        ')
-    command = f'cd {git_dir} && git archive --prefix={rep.spug_version}/ {tree_ish} | (cd .. && tar xf -)'
-    helper.local(command)
+
+    # 清理旧构建目录
+    if os.path.exists(build_dir):
+        shutil.rmtree(build_dir)
+
+    # 克隆仓库（如果 git_dir 不存在）
+    if not os.path.exists(git_dir):
+        helper.send_info('local', f'克隆仓库到 {git_dir}...\r\n')
+        helper.local(f'git clone {extend.git_repo} {git_dir}')
+
+    # 进入仓库目录并拉取最新代码
+    helper.send_info('local', f'拉取最新代码并切换分支/标签...\r\n')
+    helper.local(f'cd {git_dir} && git fetch --all && git reset --hard {tree_ish}')
+
+    # 复制代码到 build_dir，并以 spug_version 命名
+    helper.send_step('local', 2, f'{human_time()} 拷贝代码到构建目录...        ')
+    # shutil.copytree(git_dir, build_dir, dirs_exist_ok=True)
+    helper.local(f'rsync -a {git_dir}/ {build_dir}/')
     helper.send_info('local', '\033[32m完成√\033[0m\r\n')
 
     if extend.hook_post_server:
