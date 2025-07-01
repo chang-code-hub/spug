@@ -25,30 +25,30 @@ class About extends React.Component {
     http.get('/api/setting/about/')
       .then(res => this.setState({info: res}))
       .finally(() => this.setState({fetching: false}))
-    http.get(`https://api.spug.cc/apis/release/latest/?version=${VERSION}`)
-      .then(res => {
-        if (res.has_new) {
-          notification.open({
-            key: 'new_version',
-            duration: 0,
-            top: 88,
-            message: `发现新版本 ${res.version}`,
-            icon: <SmileTwoTone/>,
-            btn: <a target="_blank" rel="noopener noreferrer" href="https://ops.spug.cc/docs/update-version/">如何升级？</a>,
-            description: <pre style={{lineHeight: '30px'}}>{res.content}<br/>{res.extra}</pre>
-          })
-        } else if (res.extra) {
-          notification.open({
-            key: 'new_version',
-            duration: 0,
-            top: 88,
-            message: `已是最新版本`,
-            icon: <SmileTwoTone/>,
-            btn: <Button type="link" onClick={() => notification.close('new_version')}>知道了</Button>,
-            description: <pre style={{lineHeight: '30px'}}>{res.extra}</pre>
-          })
-        }
-      })
+    // http.get(`https://api.spug.cc/apis/release/latest/?version=${VERSION}`)
+    //   .then(res => {
+    //     if (res.has_new) {
+    //       notification.open({
+    //         key: 'new_version',
+    //         duration: 0,
+    //         top: 88,
+    //         message: `发现新版本 ${res.version}`,
+    //         icon: <SmileTwoTone/>,
+    //         btn: <a target="_blank" rel="noopener noreferrer" href="https://ops.spug.cc/docs/update-version/">如何升级？</a>,
+    //         description: <pre style={{lineHeight: '30px'}}>{res.content}<br/>{res.extra}</pre>
+    //       })
+    //     } else if (res.extra) {
+    //       notification.open({
+    //         key: 'new_version',
+    //         duration: 0,
+    //         top: 88,
+    //         message: `已是最新版本`,
+    //         icon: <SmileTwoTone/>,
+    //         btn: <Button type="link" onClick={() => notification.close('new_version')}>知道了</Button>,
+    //         description: <pre style={{lineHeight: '30px'}}>{res.extra}</pre>
+    //       })
+    //     }
+    //   })
   }
 
 
