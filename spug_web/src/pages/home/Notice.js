@@ -31,7 +31,8 @@ function NoticeIndex(props) {
       .then(res => {
         setRecords(res);
         for (let item of res) {
-          if (item.is_stress && !item.read_ids.includes(id)) {
+          if (item.is_stress) {
+            //if (!item.read_ids.includes(id))
             setNotice(item)
           }
         }
