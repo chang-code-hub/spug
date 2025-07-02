@@ -27,6 +27,8 @@ services:
       - "80:80"
     environment:
       - SPUG_DOCKER_VERSION=v3.2.4
+      - SPUG_ADMIN_PASSWORD=spug.cc
+      - SPUG_ADMIN_USER=admin
       - MYSQL_DATABASE=spug
       - MYSQL_USER=spug
       - MYSQL_PASSWORD=spug.cc

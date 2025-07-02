@@ -38,6 +38,15 @@ EOF
 
 mkdir -p /data/spug/logs
 
-python3 /app/spug_api/manage.py updatedb
+# 默认账号密码
+DEFAULT_USER="admin"
+DEFAULT_PASSWORD="spug.cc"
+
+# 判断环境变量是否为空
+SPUG_ADMIN_USER=${SPUG_ADMIN_USER:-$DEFAULT_USER}
+SPUG_ADMIN_PASSWORD=${SPUG_ADMIN_PASSWORD:-$DEFAULT_PASSWORD}
+
+# 执行命令
+/usr/bin/init_spug "$SPUG_ADMIN_USER" "$SPUG_ADMIN_PASSWORD"
 
 exec supervisord -c /etc/supervisord.d/spug.ini
